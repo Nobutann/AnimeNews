@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import SearchBar from '@/components/SearchBar';
 
 interface Anime {
     mal_id: number;
@@ -19,7 +20,10 @@ async function searchAnimes(query: string): Promise<Anime[]> {
     });
     
     const data = await response.json();
-    return data.data ?? [];
+    return (data.data ?? []).filter(
+      (anime: Anime, index: number, self: Anime[]) =>
+        index === self.findIndex(a => a.mal_id === anime.mal_id)
+    );
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
@@ -32,30 +36,17 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     const { q } = await searchParams;
     const animes = q ? await searchAnimes(q): [];
 
-    return (
+  return (
     <main className="min-h-dvh bg-[#0f0f0f] px-4 py-6 max-w-lg mx-auto">
-      <header className="mb-6 flex items-center justify-between">
+      <header className="mb-6">
         <a href="/" className="text-zinc-500 text-sm hover:text-white transition-colors">
-          ← voltar
+          Home
         </a>
       </header>
 
-      <form method="GET" action="/search" className="mb-6 flex gap-2">
-        <input
-          type="search"
-          name="q"
-          defaultValue={q ?? ''}
-          placeholder="buscar anime..."
-          autoFocus
-          className="flex-1 bg-[#171717] border border-zinc-800 text-white text-base sm:text-sm rounded px-3 py-2.5 outline-none focus:border-zinc-600 transition-colors placeholder:text-zinc-600"
-        />
-        <button
-          type="submit"
-          className="bg-[#171717] border border-zinc-800 text-zinc-400 text-sm px-4 py-2.5 rounded hover:border-zinc-600 hover:text-white transition-colors"
-        >
-          buscar
-        </button>
-      </form>
+      <div className="mb-6">
+        <SearchBar />
+      </div>
 
       {q && animes.length === 0 && (
         <p className="text-zinc-600 text-sm">nenhum resultado para "{q}"</p>

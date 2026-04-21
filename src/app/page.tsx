@@ -12,7 +12,7 @@ export default async function HomePage() {
   return (
     <main className="min-h-dvh bg-[#0f0f0f] px-4 py-6">
       <header className="mb-6 flex items-center justify-between">
-        <h1 className="text-white text-lg font-medium">anime-news</h1>
+        <h1 className="text-white text-lg font-medium">Anime News</h1>
         <a href="/profile" className="text-zinc-500 text-sm hover:text-white transition-colors">
           {session.user?.name}
         </a>
@@ -23,7 +23,7 @@ export default async function HomePage() {
       </section>
 
       <section>
-        <h2 className="text-zinc-400 text-sm mb-4">lançando agora</h2>
+        <h2 className="text-zinc-400 text-sm mb-4">Lançando Agora</h2>
         <AnimeGrid />
       </section>
     </main>

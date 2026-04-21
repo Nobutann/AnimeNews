@@ -46,7 +46,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
     <main className="min-h-dvh bg-[#0f0f0f] px-4 py-6 max-w-lg mx-auto">
       <header className="mb-6">
         <a href="/" className="text-zinc-500 text-sm hover:text-white transition-colors">
-          ← Voltar
+          Home
         </a>
       </header>
 
