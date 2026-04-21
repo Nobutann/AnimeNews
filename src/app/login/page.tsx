@@ -43,7 +43,7 @@ export default function LoginPage() {
         <article className="bg-[#171717] border border-zinc-800 rounded-lg p-5 sm:p-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-xs text-zinc-400 mb-1.5">email</label>
+              <label htmlFor="email" className="block text-xs text-zinc-400 mb-1.5">Email</label>
               <input
                 id="email"
                 type="email"
@@ -57,7 +57,7 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-xs text-zinc-400 mb-1.5">senha</label>
+              <label htmlFor="password" className="block text-xs text-zinc-400 mb-1.5">Senha</label>
               <input
                 id="password"
                 type="password"
@@ -79,7 +79,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-white text-black text-sm font-medium rounded py-2.5 hover:bg-zinc-200 transition-colors disabled:opacity-50"
             >
-              {loading ? 'entrando...' : 'entrar'}
+              {loading ? 'entrando...' : 'Entrar'}
             </button>
           </form>
 
