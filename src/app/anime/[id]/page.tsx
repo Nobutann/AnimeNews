@@ -91,7 +91,7 @@ export default async function AnimePage({ params }: { params: Promise<{ id: stri
           </section>
         )}
 
-        <MarkButton animeId={anime.mal_id} title={anime.title} imageUrl={anime.images.jpg.large_image_url} marked={!!marked} userId={session.user.id} />
+        <MarkButton animeId={anime.mal_id} title={anime.title} imageUrl={anime.images.jpg.large_image_url} marked={!!marked} />
       </article>
     </main>
   )

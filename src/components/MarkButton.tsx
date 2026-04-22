@@ -3,11 +3,10 @@
 import { useState } from 'react';
 
 interface Props {
-    animeId: number
-    title: string
-    imageUrl: string
-    marked: boolean
-    userId: string
+    animeId: number;
+    title: string;
+    imageUrl: string;
+    marked: boolean;
 }
 
 export default function MarkButton({ animeId, title, imageUrl, marked: initialMarked }: Props) {
