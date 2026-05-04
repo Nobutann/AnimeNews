@@ -1,36 +1,137 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Anime News
 
-## Getting Started
+Aplicação web para acompanhamento de lançamentos de animes. O usuário cria uma conta, pesquisa títulos, marca os que quer seguir e recebe notificações push no celular sempre que um novo episódio, temporada ou estreia for detectado.
 
-First, run the development server:
+## Funcionalidades
+
+- Autenticação via Google OAuth ou email e senha
+- Busca de animes com autocomplete em tempo real via Jikan API
+- Lista de acompanhamento por usuário
+- Notificações push entregues no dispositivo mesmo com o navegador fechado
+- Job em background que verifica novos episódios e temporadas a cada hora
+- Interface mobile-first
+
+## Stack
+
+| Camada | Tecnologia |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Linguagem | TypeScript |
+| Estilização | Tailwind CSS v4 |
+| Autenticação | NextAuth v5 |
+| ORM | Prisma 6 |
+| Banco de dados | PostgreSQL |
+| Notificações | web-push (VAPID) |
+| Agendamento | node-cron |
+| Dados de anime | Jikan API (MyAnimeList) |
+
+## Pré-requisitos
+
+- Node.js 18+
+- Docker e Docker Compose
+- Projeto no Google Cloud com credenciais OAuth 2.0
+
+## Como rodar
+
+**1. Clone o repositório**
+
+```bash
+git clone https://github.com/seu-usuario/anime-news.git
+cd anime-news
+```
+
+**2. Instale as dependências**
+
+```bash
+npm install
+```
+
+**3. Configure as variáveis de ambiente**
+
+Crie um arquivo `.env` na raiz do projeto com os seguintes valores:
+
+```env
+DATABASE_URL="postgresql://admin:admin@localhost:5432/animenews"
+
+AUTH_SECRET=""                    # gere com: npx auth secret
+AUTH_GOOGLE_ID=""                 # Google Cloud Console
+AUTH_GOOGLE_SECRET=""             # Google Cloud Console
+
+NEXT_PUBLIC_VAPID_PUBLIC_KEY=""   # gere com: npx web-push generate-vapid-keys
+VAPID_PRIVATE_KEY=""
+VAPID_EMAIL="mailto:seu@email.com"
+```
+
+**4. Suba o banco de dados**
+
+```bash
+docker compose up -d
+```
+
+**5. Rode as migrations**
+
+```bash
+npx prisma migrate dev
+```
+
+**6. Inicie o servidor de desenvolvimento**
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+A aplicação estará disponível em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Configuração do Google OAuth
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Acesse o [Google Cloud Console](https://console.cloud.google.com)
+2. Crie um projeto e vá em **APIs e Serviços > Credenciais**
+3. Crie um **ID do cliente OAuth 2.0** do tipo **Aplicativo da Web**
+4. Adicione `http://localhost:3000/api/auth/callback/google` nas URIs de redirecionamento autorizadas
+5. Copie o Client ID e o Client Secret para o `.env`
 
-## Learn More
+## Estrutura do projeto
 
-To learn more about Next.js, take a look at the following resources:
+```
+anime-news/
+├── prisma/
+│   ├── schema.prisma
+│   └── migrations/
+├── public/
+│   └── sw.js                     # Service worker para notificações push
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── auth/[...nextauth]/
+│   │   │   ├── animes/           # POST e DELETE da lista de acompanhamento
+│   │   │   ├── push/subscribe/   # Salva subscription do dispositivo
+│   │   │   └── register/         # Criação de conta
+│   │   ├── anime/[id]/           # Página de detalhes do anime
+│   │   ├── login/
+│   │   ├── register/
+│   │   ├── search/
+│   │   └── page.tsx              # Página inicial com animes em lançamento
+│   ├── components/
+│   │   ├── AnimeGrid.tsx
+│   │   ├── MarkButton.tsx
+│   │   ├── PushSubscriber.tsx
+│   │   └── SearchBar.tsx
+│   └── lib/
+│       ├── auth.ts
+│       ├── cron.ts               # Job de verificação de novidades
+│       └── prisma.ts
+├── docker-compose.yml
+└── .env
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Status do projeto
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Em desenvolvimento ativo. Funcionalidades pendentes:
 
-## Deploy on Vercel
+- Página de perfil do usuário
+- Lista de animes marcados visível na página inicial
+- Verificação de email no cadastro
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Licença
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
