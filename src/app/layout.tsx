@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import PushSubscriber from '@/components/PushSubscriber';
+import { startCron } from '@/lib/cron';
+
+startCron();
 
 export const metadata: Metadata = {
   title: 'Anime News',
