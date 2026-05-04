@@ -2,6 +2,7 @@ import { auth } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import AnimeGrid from '@/components/AnimeGrid';
 import SearchBar from '@/components/SearchBar';
+import PushSubscriber from '@/components/PushSubscriber';
 
 export default async function HomePage() {
   const session = await auth();
@@ -11,6 +12,7 @@ export default async function HomePage() {
 
   return (
     <main className="min-h-dvh bg-[#0f0f0f] px-4 py-6">
+      <PushSubscriber />
       <header className="mb-6 flex items-center justify-between">
         <h1 className="text-white text-lg font-medium">Anime News</h1>
         <a href="/profile" className="text-zinc-500 text-sm hover:text-white transition-colors">

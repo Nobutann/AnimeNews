@@ -79,7 +79,7 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full bg-white text-black text-sm font-medium rounded py-2.5 hover:bg-zinc-200 transition-colors disabled:opacity-50"
             >
-              {loading ? 'entrando...' : 'Entrar'}
+              {loading ? 'Entrando...' : 'Entrar'}
             </button>
           </form>
 
